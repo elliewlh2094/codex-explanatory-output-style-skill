@@ -1,0 +1,7 @@
+interface:
+  display_name: "Explanatory Output Style"
+  short_description: "Session-wide teaching guidance for coding work"
+  default_prompt: "Use $explanatory-output-style to complete the user's coding task while adding a short `★ Insight` block before coding and after coding that emphasizes concrete implementation choices, design patterns, tradeoffs, and repository-specific details."
+
+policy:
+  allow_implicit_invocation: true
