@@ -38,13 +38,13 @@
 將此儲存庫複製到：
 
 ```text
-.codex/skills/explanatory-output-style/
+${CWD}/.codex/skills/explanatory-output-style/
 ```
 
 安裝後的目錄結構應包含：
 
 ```text
-.codex/skills/explanatory-output-style/
+${CWD}/.codex/skills/explanatory-output-style/
   SKILL.md
   agents/openai.yaml
 ```
@@ -55,12 +55,6 @@
 
 ```text
 ${CODEX_HOME}/skills/explanatory-output-style/
-```
-
-如果 `CODEX_HOME` 尚未設定，請使用：
-
-```text
-~/.codex/skills/explanatory-output-style/
 ```
 
 ### 最後一步

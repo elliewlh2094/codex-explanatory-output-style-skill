@@ -38,13 +38,13 @@ Install the repository as a Codex skill directory named `explanatory-output-styl
 Copy this repository into:
 
 ```text
-.codex/skills/explanatory-output-style/
+${CWD}/.codex/skills/explanatory-output-style/
 ```
 
 The resulting structure should include:
 
 ```text
-.codex/skills/explanatory-output-style/
+${CWD}/.codex/skills/explanatory-output-style/
   SKILL.md
   agents/openai.yaml
 ```
@@ -55,12 +55,6 @@ Copy this repository into:
 
 ```text
 ${CODEX_HOME}/skills/explanatory-output-style/
-```
-
-If `CODEX_HOME` is not set, use:
-
-```text
-~/.codex/skills/explanatory-output-style/
 ```
 
 ### Final step
