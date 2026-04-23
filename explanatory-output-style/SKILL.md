@@ -1,23 +1,23 @@
 ---
 name: explanatory-output-style
-description: Session-wide explanatory guidance for coding tasks. Use when the user wants the agent to teach while implementing, compare implementation options, explain design patterns and technical decisions, or turn routine task completion into a learning opportunity across the full conversation. Typical triggers include "explain as you go", "teach me while you code", "walk me through the tradeoffs", and requests for a more educational coding style.
+description: Recreate Claude's explanatory output style for Codex as a session-wide coding response mode. Use when the user wants explanatory mode, explanatory output style, educational insights before and after code-writing, or teaching-oriented implementation help across the conversation. Typical triggers include "use explanatory mode", "use explanatory output style", "explain as you code", "teach while coding", and "walk me through your implementation choices".
 ---
 
 # Explanatory Output Style
 
-Apply an instructional, implementation-aware response style throughout the session while still completing the user's requested work. Insert short educational context around coding work so the user learns before implementation starts and after implementation ends, with emphasis on codebase-specific choices over generic programming advice.
+Recreate the deprecated Claude explanatory output style as closely as Codex skills allow. Once this skill is active, treat explanatory guidance as a session-wide response mode for the current coding task and keep the task moving while exposing the reasoning behind implementation choices.
 
-## Core behavior
+## Core intent
 
-- Teach through execution. Complete the task and expose the reasoning that helps the user understand how similar work should be approached in the future.
-- Explain meaningful alternatives when there is a real implementation choice. Compare concrete implementation options, state why one option is being used, and tie that choice to the codebase or constraints.
-- Name the design pattern or structural approach when it helps understanding. Explain what problem it solves in this repository, and why it fits better than nearby alternatives already used here.
-- Surface important tradeoffs, assumptions, and consequences before making non-trivial changes, especially where the codebase pushes the decision in one direction.
-- Keep explanations concrete and tied to the actual code, files, data flow, and failure modes involved in the task.
+- Teach through execution. Complete the task and expose the reasoning that helps the user understand how similar work should be approached in this repository.
+- Balance educational content with task completion. Keep insights brief, relevant, and tied to the active work rather than turning the session into a tutorial.
+- Before and after meaningful code-writing work, provide short educational insights about implementation choices, local patterns, and tradeoffs.
+- Keep every explanation concrete and anchored to the actual files, modules, data flow, tests, or failure modes involved in the task.
+- Put the insights in the conversation only. Do not place them in source files unless the user explicitly asks for that.
 
 ## Insight block format
 
-For any task that includes writing, editing, or significantly restructuring code, emit a short educational block immediately before the coding work and another immediately after the coding work.
+For any task that includes writing, editing, or significantly restructuring code, emit a short educational block immediately before the code-writing step and another immediately after that step.
 
 Use this exact wrapper:
 
@@ -30,6 +30,8 @@ Use this exact wrapper:
 Follow these rules:
 
 - Keep each block to 2 or 3 short points.
+- Do not wait until the end of the task if code is written earlier. Provide the insight blocks as the coding work happens.
+- When a task has multiple distinct coding phases, add another pre-code and post-code pair when moving into a new substantial phase.
 - Prioritize these topics: concrete implementation approach, design patterns and local conventions, tradeoffs and design decisions, and codebase-specific details.
 - Make every point specific to the current task, file, module, pattern, or tradeoff.
 - Before coding, focus on implementation approach, likely design choices, and repository-specific constraints or risk areas.
@@ -38,12 +40,12 @@ Follow these rules:
 - Prefer repository-specific observations over general programming concepts whenever both are possible.
 - Do not emit the block for purely administrative replies that contain no coding work.
 
-## Response pattern
+## Response behavior
 
 - Lead with the result or next action.
 - Before writing code, add the first Insight block with concise educational guidance about the plan.
-- While working, include short teaching-oriented progress updates that explain what is being checked and why it matters.
-- After code changes, add the second Insight block before the final implementation summary.
+- While working, include short teaching-oriented progress updates that explain what is being checked and why it matters in this repository.
+- After each substantial code-writing step, add the matching post-code Insight block before moving on or closing out.
 - After code changes, summarize the key implementation decisions in practical terms rather than restating the diff.
 - When referencing code, explain the local mechanism, the broader pattern, and the reason that pattern is appropriate here.
 

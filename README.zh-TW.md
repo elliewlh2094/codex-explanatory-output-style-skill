@@ -1,62 +1,69 @@
-# Codex 解釋型輸出風格 Skill
+# Codex 解釋型輸出風格技能
 
 **[English](README.md)** | 中文
 
 ## 簡介
 
-`explanatory-output-style` 是一個 OpenAI Codex skill，用來在程式開發對話中加入簡短且實用的教學說明。當這個 skill 啟用時，它會引導代理（agent）在完成任務的同時，說明具體實作方案的選擇、本地設計模式、權衡因素，以及與目前程式碼庫直接相關的細節。
+`explanatory-output-style` 是一個 OpenAI Codex 技能（skill）封裝，用來在 Codex 可行的範圍內重現 Claude 的解釋型輸出風格。當技能啟用時，Codex 會持續完成使用者的程式任務，同時補上簡短且具體的教學說明，內容聚焦在實作選擇、本地模式、權衡與儲存庫相關細節。
 
-這個 skill 適合希望一邊完成開發工作、一邊理解實作理由的使用者。它會在程式撰寫前後插入簡短的 `★ Insight` 區塊，讓整個過程維持執行導向，同時保留足夠的設計說明。
+這個封裝以此儲存庫中的 `explanatory-output-style/` 目錄提供。安裝時請直接複製這個目錄，並把它當作最終技能目錄使用。
 
-## 功能
+這個技能的參考來源是 Anthropic 官方的 Claude 插件：
+`https://github.com/anthropics/claude-plugins-official/tree/main/plugins/explanatory-output-style`
 
-- 在開始撰寫程式碼前加入一個簡短的 `★ Insight` 教學區塊。
-- 在完成程式碼後再加入一個 `★ Insight` 教學區塊。
-- 將說明重點放在具體實作方案，而非泛用的程式設計理論。
-- 在需要時說明設計模式（design pattern）與程式碼庫中的本地慣例。
-- 說明權衡、設計決策，以及某個方案為何比其他方案更適合目前儲存庫。
-- 優先指出與程式碼庫直接相關的細節，例如既有抽象、命名規則、模組邊界、狀態流與測試風格。
-- 透過 `agents/openai.yaml` 啟用隱式呼叫，讓 skill 可以在 session 起始階段自動參與上下文建立。
+## 行為
 
-## 格式範例
+- 將解釋型說明視為目前程式任務的工作階段層級回應模式。
+- 在有意義的寫碼工作開始前加入一個簡短的 `★ Insight` 區塊。
+- 在有意義的寫碼工作完成後加入對應的 `★ Insight` 區塊。
+- 當任務進入新的主要寫碼階段時，再加入新的一組 `★ Insight` 前後區塊。
+- 讓教學內容緊扣目前的檔案、模組、資料流、測試與失敗模式。
+- 將教學內容保留在對話中，不寫進原始碼檔案。
+- 透過 `explanatory-output-style/agents/openai.yaml` 支援隱式觸發。
 
-這個 skill 使用以下 `★ Insight` 格式：
+## Insight 格式
+
+這個技能使用以下 `★ Insight` 包裝格式：
 
 ```markdown
 `★ Insight ──────────────────────────────────────`
-- [說明實作方案的教學重點]
-- [說明設計模式、權衡或程式碼庫細節的教學重點]
+[2-3 個教學重點]
 `─────────────────────────────────────────────────`
 ```
 
+區塊中的重點會著重在：
+
+- 這次任務採用的具體實作方式。
+- 儲存庫既有的本地模式或慣例。
+- 這次修改背後的權衡或設計判斷。
+- 幫助理解這個實作為何適合目前儲存庫的脈絡細節。
+
+## 觸發範例
+
+下列自然語句有助於讓 Codex 選用這個技能：
+
+- `use explanatory mode`
+- `use explanatory output style`
+- `explain as you code`
+- `teach while coding`
+- `walk me through your implementation choices`
+
 ## 安裝方式
 
-請將這個儲存庫建立成名稱是 `explanatory-output-style` 的 Codex skill 目錄。
-
-### Project-scope 安裝方式
-
-將此儲存庫複製到：
+請將此儲存庫中的 `explanatory-output-style/` 目錄複製到下列任一位置：
 
 ```text
 ${CWD}/.codex/skills/explanatory-output-style/
-```
-
-安裝後的目錄結構應包含：
-
-```text
-${CWD}/.codex/skills/explanatory-output-style/
-  SKILL.md
-  agents/openai.yaml
-```
-
-### User-scope 安裝方式
-
-將此儲存庫複製到：
-
-```text
 ${CODEX_HOME}/skills/explanatory-output-style/
 ```
 
-### 最後一步
+安裝後的目錄內容應為：
 
-完成複製後，重新啟動 Codex，讓 skill 能在新的 session 中被正確載入。
+```text
+explanatory-output-style/
+  SKILL.md
+  agents/
+    openai.yaml
+```
+
+完成複製後，重新啟動 Codex，讓技能在新的工作階段中被載入。

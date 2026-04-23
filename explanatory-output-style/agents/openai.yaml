@@ -1,0 +1,7 @@
+interface:
+  display_name: "Explanatory Output Style"
+  short_description: "Session-wide explanatory mode for coding"
+  default_prompt: "Use $explanatory-output-style to switch this coding task into explanatory mode and add brief `★ Insight` blocks before and after meaningful code-writing steps."
+
+policy:
+  allow_implicit_invocation: true
